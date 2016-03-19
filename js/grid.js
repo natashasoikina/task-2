@@ -8,15 +8,17 @@
      * @param {number[][]} nodes множество вершин графа представленное двумерной матрицей чисел
      * @param {number} m количество строк матрицы
      * @param {number} n количество столбцов матрицы
+     * @param {Object[]} operations совокупность шагов выполнения алгоритма
      */
     function Grid(nodes) {
         this.nodes = nodes;
         this.m = this.nodes.length;
         this.n = this.nodes[0].length;
+        this.operations = [];
     }
 
     /**
-     * Функция возвращает значение вершины графа
+     * Возвращает значение вершины графа
      * @param {Node} node
      * @returns {number}
      */
@@ -25,7 +27,7 @@
     };
 
     /**
-     * Функция устанавливает новое значение вершины графа
+     * Устанавливает новое значение вершины графа
      * @param {Node} node
      * @param {number} value
      */
@@ -34,7 +36,7 @@
     };
 
     /**
-     * Функция проверяет принадлежит ли данная вершина графу
+     * Проверяет принадлежит ли данная вершина графу
      * @param {Node} node
      * @returns {boolean}
      */
@@ -43,7 +45,7 @@
     };
 
     /**
-     * Функция проверяет не является ли данная вершина стеной
+     * Проверяет не является ли данная вершина стеной
      * @param {Node} node
      * @returns {boolean}
      */
@@ -52,7 +54,7 @@
     };
 
     /**
-     * Функция проверяет посещалась ли ранее данная вершина
+     * Проверяет посещалась ли ранее данная вершина
      * @param {Node} node
      * @returns {boolean}
      */
@@ -61,7 +63,7 @@
     };
 
     /**
-     * Функция возвращает массив соседних вершин
+     * Находит соседние вершины и возвращает их список
      * @param {Node} node
      * @returns {Object[]}
      */
@@ -81,6 +83,19 @@
         };
 
         return neighbors;
+    };
+
+    /**
+     * Логирует шаги выполнения алгоритма
+     * @param {Node} node
+     * @param {number} type
+     */
+    Grid.prototype.logOperation = function(node, type) {
+        this.operations.push({
+            x: node.x,
+            y: node.y,
+            type: type
+        });
     };
 
     root.Grid = Grid;

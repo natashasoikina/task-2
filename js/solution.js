@@ -1,9 +1,11 @@
 (function (root) {
+    var OPEN = root.maze.OPEN;
+    var CLOSED = root.maze.CLOSED;
     var Node = root.Node;
     var Grid = root.Grid;
 
     /**
-     * Функция находит выход из лабиринта, удовлетворяющий условию y=M
+     * Находит выход из лабиринта, удовлетворяющий условию y=M
      *
      * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
      * @returns {Node} конечная вершина лабиринта
@@ -21,7 +23,7 @@
     }
 
     /**
-     * Функция восстанавливает путь из конечной вершины лабиринта в начальную вершину
+     * Восстанавливает путь из конечной вершины лабиринта в начальную вершину
      *
      * @param {Node} node конечная вершина лабиринта
      * @returns {[number, number][]} маршрут к выходу представленный списком пар координат
@@ -38,7 +40,7 @@
     };
 
     /**
-     * Функция рассчитывает значение эвристики (расстояние Манхэттена)
+     * Рассчитывает значение эвристики (расстояние Манхэттена)
      *
      * @param {Node} a рассматриваемая вершина лабиринта
      * @param {Node} b конечная вершина лабиринта
@@ -50,11 +52,14 @@
 
     /**
      * Функция находит путь к выходу и возвращает найденный маршрут
+     * В качестве алгоритма поиска кратчайшего пути используется алгоритм А*
      *
      * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
      * @param {number} x координата точки старта по оси X
      * @param {number} y координата точки старта по оси Y
-     * @returns {[number, number][]} маршрут к выходу представленный списком пар координат
+     * @returns {{path: [number, number][], operations: Object[]}}
+     *          path - маршрут к выходу представленный списком пар координат
+     *          operations - совокупность шагов выполнения алгоритма
      */
     function solution(maze, x, y) {
         var grid = new Grid(maze),
@@ -69,16 +74,21 @@
             neighborNode,
             neighbors,
             cost,
-            isVisited;
+            isVisited,
+            time;
+
+        time = performance.now();
 
         startNode = new Node(x, y);
         finishNode = findFinish(grid);
         startNode.h = heuristic(startNode, finishNode);
         openList.push(startNode);
+        grid.logOperation(startNode, OPEN);
 
         while (!openList.empty()) {
             currentNode = openList.pop();
             closedList[currentNode.index] = currentNode;
+            grid.logOperation(currentNode, CLOSED);
 
             if (currentNode.isEqual(finishNode)) {
                 path = getPathTo(currentNode);
@@ -104,13 +114,23 @@
                 if (!isVisited) {
                     neighborNode.h = heuristic(neighborNode, finishNode);
                     openList.push(neighborNode);
+                    grid.logOperation(neighborNode, OPEN);
                 } else {
                     openList.updateItem(neighborNode);
                 }
             };
         }
 
-        return path;
+        time = performance.now() - time;
+
+        console.log('length: ' + path.length + '\n' +
+                    'time: ' + time + 'ms' + '\n' +
+                    'operations: ' + grid.operations.length);
+
+        return {
+            path: path,
+            operations: grid.operations
+        };
     }
 
     root.maze.solution = solution;

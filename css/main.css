@@ -36,3 +36,11 @@ body {
 .maze__cell_current {
     background-color: #f21000;
 }
+
+.maze__cell_open {
+    background-color: rgba(242, 16, 0, .5);
+}
+
+.maze__cell_closed {
+    background-color: rgba(250, 217, 70, .5);
+}
