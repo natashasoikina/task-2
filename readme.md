@@ -11,4 +11,5 @@
 ------
 
 Для решения поставленной задачи применяется алгоритм поиска кратчайшего пути A*.
-Для реализации двоичной кучи (binary heap) было использовано [решение](https://github.com/qiao/heap.js) [Xueqiao Xu](https://github.com/qiao).
+
+Для реализации двоичной кучи (binary heap) было использовано [решение Xueqiao Xu](https://github.com/qiao/heap.js).
