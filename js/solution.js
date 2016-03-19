@@ -7,7 +7,7 @@
     /**
      * Находит выход из лабиринта, удовлетворяющий условию y=M
      *
-     * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
+     * @param {Grid} grid граф представляющий лабиринт
      * @returns {Node} конечная вершина лабиринта
      */
     function findFinish(grid) {
@@ -44,7 +44,7 @@
      *
      * @param {Node} a рассматриваемая вершина лабиринта
      * @param {Node} b конечная вершина лабиринта
-     * @returns {number} значение эвристической функции
+     * @returns {number} эвристическая оценка расстояния от рассматриваемой вершины до конечной вершины
      */
     function heuristic(a, b) {
         return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
@@ -57,9 +57,9 @@
      * @param {number[][]} maze карта лабиринта представленная двумерной матрицей чисел
      * @param {number} x координата точки старта по оси X
      * @param {number} y координата точки старта по оси Y
-     * @returns {{path: [number, number][], operations: Object[]}}
+     * @returns {{grid: {Grid}, path: [number, number][]}}
+     *          grid - граф представляющий лабиринт
      *          path - маршрут к выходу представленный списком пар координат
-     *          operations - совокупность шагов выполнения алгоритма
      */
     function solution(maze, x, y) {
         var grid = new Grid(maze),
@@ -124,12 +124,12 @@
         time = performance.now() - time;
 
         console.log('length: ' + path.length + '\n' +
-                    'time: ' + time + 'ms' + '\n' +
+                    'time: ' + time.toFixed(4) + 'ms' + '\n' +
                     'operations: ' + grid.operations.length);
 
         return {
-            path: path,
-            operations: grid.operations
+            grid: grid,
+            path: path
         };
     }
 

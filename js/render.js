@@ -88,13 +88,12 @@
     /**
      * Создает визуализацию выполнения алгоритма поиска и найденного пути
      *
-     * @param {number[][]} maze схема лабиринта
+     * @param {Grid} граф представляющий лабиринт
      * @param {[number, number][]} path маршрут к выходу представленный списком пар координат
-     * @param {Object[]} operations совокупность шагов выполнения алгоритма
      */
-    function visualize(maze, path, operations) {
+    function visualize(grid, path) {
         var points = document.querySelectorAll('.maze__cell'),
-            rowWidth = maze[0].length;
+            operations = grid.operations;
 
         function renderPath(path) {
             if (path && path.length) {
@@ -104,7 +103,7 @@
 
                 for (var i = 0; i < path.length; i++) {
                     point = path[i];
-                    pointElem = points[rowWidth * point[1] + point[0]];
+                    pointElem = points[grid.n * point[1] + point[0]];
                     type = (i === (path.length - 1) ? defineType(CURRENT) : defineType(PATH));
                     pointElem.className = 'maze__cell' + (type ? ' maze__cell_' + type : '');
                 }
@@ -118,7 +117,7 @@
 
                 if (operations.length > 0) {
                     operation = operations.shift();
-                    pointElem = points[rowWidth * operation.y + operation.x];
+                    pointElem = points[grid.n * operation.y + operation.x];
                     type = defineType(operation.type);
                     pointElem.className = 'maze__cell' + (type ? ' maze__cell_' + type : '');
                     requestAnimationFrame(drawStep);

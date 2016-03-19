@@ -6,6 +6,6 @@
         root.maze.render(map)
     );
 
-    root.maze.visualize(map, result.path, result.operations);
+    root.maze.visualize(result.grid, result.path);
 
 })(this);
